@@ -6,7 +6,7 @@ from pydantic import BaseModel
 import logging
 from fastapi.responses import JSONResponse
 
-# Setting up the database connection
+# Setting buat konek database
 SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://root:''@localhost:3306/perpustakaan"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -36,6 +36,14 @@ class Buku(BaseModel):
 
     class Config:
         orm_mode = True
+        
+    def read(self, halaman: int):
+        konten_per_halaman = self.konten.split('\n')
+        for i in range(min(halaman, len(konten_per_halaman))):
+            print(konten_per_halaman[i])
+    
+    def __str__(self):
+        return f"{self.judul} by {self.penulis}"
 
 class BukuCreate(BaseModel):
     judul: str
